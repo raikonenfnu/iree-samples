@@ -48,7 +48,7 @@ class TFLiteModelTest(testing.absltest.TestCase):
       iree_result = iree_result.astype(dtype)
       tflite_result = tflite_result.astype(dtype)
       self.assertEqual(iree_result.shape, tflite_result.shape)
-      maxError = np.max(np.abs(iree_result - tflite_result))
+      maxError = np.max(np.abs(iree_result.astype(float) - tflite_result.astype(float)))
       absl.logging.info("Max error (%d): %f", i, maxError)
 
   def compile_and_execute(self):
