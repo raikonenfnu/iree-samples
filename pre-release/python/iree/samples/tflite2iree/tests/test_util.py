@@ -25,6 +25,7 @@ class TFLiteModelTest(testing.absltest.TestCase):
     self.workdir = self.workdir = FLAGS.test_tmpdir
     self.tflite_file = '/'.join([self.workdir, 'model.tflite'])
     self.tflite_ir = '/'.join([self.workdir, 'tflite.mlir'])
+    self.iree_ir = '/'.join([self.workdir, 'tosa.mlir'])
 
     urllib.request.urlretrieve(self.model_path, self.tflite_file)
     self.binary = '/'.join([self.workdir, 'module.bytecode'])
@@ -58,6 +59,7 @@ class TFLiteModelTest(testing.absltest.TestCase):
       self.tflite_file, input_type="tosa",
       output_file=self.binary,
       save_temp_tfl_input=self.tflite_ir,
+      save_temp_iree_input=self.iree_ir,
       target_backends=iree_tflite_compile.DEFAULT_TESTING_BACKENDS,
       import_only=False)
 
