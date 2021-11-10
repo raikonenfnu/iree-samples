@@ -1,5 +1,4 @@
 
-from iree import runtime as ireert
 from iree.compiler import tf as tfc
 import sys
 from absl import app
@@ -11,7 +10,7 @@ import tensorflow as tf
 
 from transformers import BertModel, BertTokenizer, TFBertModel
 
-SEQUENCE_LENGTH = 512
+SEQUENCE_LENGTH = 128
 BATCH_SIZE = 1
 
 # Create a set of 2-dimensional inputs
@@ -35,10 +34,10 @@ class BertModule(tf.Module):
 if __name__ == "__main__":
     # BertModule()
     # Compile the model using IREE
-    compiler_module = tfc.compile_module(BertModule(), exported_names = ["predict"], import_only=True)
+    compiler_module = tfc.compile_module(BertModule(), exported_names = ["predict"], import_only=True, save_temp_tf_input="tf_input.mlir", save_temp_mid_level_input="mid_level_input.mlir", save_temp_iree_input="iree_input.mlir")
     # Save module as MLIR file in a directory
     ARITFACTS_DIR = os.getcwd()
-    mlir_path = os.path.join(ARITFACTS_DIR, "model.mlir")
+    mlir_path = os.path.join(ARITFACTS_DIR, "model_LM.mlir")
     with open(mlir_path, "wt") as output_file:
         output_file.write(compiler_module.decode('utf-8'))
     print(f"Wrote MLIR to path '{mlir_path}'")

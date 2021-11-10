@@ -1,5 +1,3 @@
-from iree import runtime as ireert
-#from iree.tf.support import module_utils
 from iree.compiler import tf as tfc
 import sys
 from absl import app
